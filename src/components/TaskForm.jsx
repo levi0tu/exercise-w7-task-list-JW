@@ -4,12 +4,13 @@ const TaskForm = ({ newTodo, onNewTodoChange, onFormSubmit }) => {
       <h1>📝 ToDo App</h1>
       <h2>Type you tasks here below 👇</h2>
 
-      <textarea
+      <label htmlFor="task-description">Task description</label>
+      <textarea id="task-description"
         value={newTodo}
         onChange={onNewTodoChange}
         placeholder="Type a task.."
       />
-      <button type="submit">Submit form!</button>
+      <button className="button" type="submit">Submit form!</button>
     </form>
   )
 }

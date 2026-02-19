@@ -1,26 +1,58 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import TaskForm from "./TaskForm"
 import TaskList from "./TaskList"
 
+// define the setting state functions
 export const Tasks = () => {
   const [taskList, setTaskList] = useState([])
-  // define the setting state functions
-  const [loading] = useState(false)
-  const [newTodo] = useState("")
+  const [loading, setLoading] = useState(false)
+  const [newTodo, setNewTodo] = useState("")
 
   // fetch tasks
   const fetchTasks = async () => {
-    // set task list to be saved in the state
+    setLoading(true)
+    try {
+      const response = await fetch("https://task-api-m07f.onrender.com/tasks")
+      const data = await response.json()
+      setTaskList(data)
+    } catch (error) {
+      console.error("Could not create task:", error)
+    } finally {
+      setLoading(false)
+    }
   }
-  
-  const handleNewTodoChange = () => {
-    // set a  new ToDo from the value of the textarea defined in the TaskForm component
+  // set task list to be saved in the state
+
+
+  // set a  new ToDo from the value of the textarea defined in the TaskForm component
+  const handleNewTodoChange = (e) => {
+    setNewTodo(e.target.value)
+  }
+  // define your POST request for new ToDo
+  const onFormSubmit = async (e) => {
+    e.preventDefault()
+    if (!newTodo.trim()) return
+
+    setLoading(true)
+    try {
+      await fetch("https://task-api-m07f.onrender.com/tasks", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ description: newTodo.trim() })
+      })
+      setNewTodo("")
+      await fetchTasks()
+    } catch (error) {
+      console.error("Could not fetch tasks:", error)
+      // don't forget to set the loading state
+    } finally {
+      setLoading(false)
+    }
   }
 
-  const onFormSubmit = async () => {
-    // define your POST request for new ToDo
-    // don't forget to set the loading state
-  }
+  useEffect(() => {
+    fetchTasks()
+  }, [])
 
   return (
     <div className="wrapper">
