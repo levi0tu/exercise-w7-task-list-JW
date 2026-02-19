@@ -8,7 +8,7 @@ export const Tasks = () => {
   const [loading, setLoading] = useState(false)
   const [newTodo, setNewTodo] = useState("")
 
-  // fetch tasks
+  // fetch tasks from API and store them in a local state
   const fetchTasks = async () => {
     setLoading(true)
     try {
@@ -21,14 +21,13 @@ export const Tasks = () => {
       setLoading(false)
     }
   }
-  // set task list to be saved in the state
 
 
   // set a  new ToDo from the value of the textarea defined in the TaskForm component
   const handleNewTodoChange = (e) => {
     setNewTodo(e.target.value)
   }
-  // define your POST request for new ToDo
+  // submit a new task to API, then refresh task list
   const onFormSubmit = async (e) => {
     e.preventDefault()
     if (!newTodo.trim()) return
@@ -44,7 +43,6 @@ export const Tasks = () => {
       await fetchTasks()
     } catch (error) {
       console.error("Could not fetch tasks:", error)
-      // don't forget to set the loading state
     } finally {
       setLoading(false)
     }

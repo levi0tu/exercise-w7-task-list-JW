@@ -4,21 +4,8 @@ const TaskList = ({ loading, taskList, setTaskList }) => {
   if (loading) {
     return <h1>Loading in progress...</h1>
   }
-
+  //toggle task checked state in API and update UI
   const onTaskCheckChange = async (task) => {
-    // Make a POST request here with the updated task isChecked value
-
-    /* 
-    update a state object
-    
-    updatedTask is a new object that is the same as the task object except for the isChecked property, 
-    which is toggled from true to false or from false to true. 
-    This code is often used to update a property of an object while preserving the rest of its properties. */
-
-    /*     pass the updatedTask to the headers of your POST request
-
-    headers: { updatedTask, "Content-Type": "application/json" }
-    */
 
     const updatedTask = { ...task, isChecked: !task.isChecked }
 
@@ -44,6 +31,7 @@ const TaskList = ({ loading, taskList, setTaskList }) => {
         .map((task) => (
           <div key={task._id} className="task">
             <input
+              className="task-checkbox"
               onChange={() => onTaskCheckChange(task)}
               type="checkbox"
               checked={task.isChecked}
